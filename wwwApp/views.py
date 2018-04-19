@@ -23,8 +23,18 @@ class FlightTable(tables.Table):
         model = Flight
         template_name = 'django_tables2/bootstrap.html'
         exclude=['id']
+        row_attrs = {
+            'flight-id': lambda record: str(record.id)
+        }
 
 def flight_table(request):
+    locale.setlocale(locale.LC_TIME, "pl_PL.utf8")
+    table = FlightTable(Flight.objects.all())
+    RequestConfig(request).configure(table)
+    return render(request, 'wwwApp/flights.html', {'table': table})
+
+
+def flight_details(request, id):
     locale.setlocale(locale.LC_TIME, "pl_PL.utf8")
     table = FlightTable(Flight.objects.all())
     RequestConfig(request).configure(table)

@@ -19,5 +19,6 @@ from wwwApp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('flights/', views.flight_table)
+    path('flights/', views.flight_table),
+    path('flights/<int:id>', views.flight_details)
 ]
