@@ -13,7 +13,7 @@ from populate_database.airports import airports
 from wwwApp.models import *
 from itertools import cycle
 
-SIZE = 10;
+SIZE = 50;
 PLANES_COUNT = SIZE
 AIRPORTS_COUNT = SIZE
 FLIGHTS_FOR_EACH_PLANE_COUNT = SIZE
