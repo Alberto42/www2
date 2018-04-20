@@ -1,8 +1,10 @@
 import datetime
 import locale
 
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django_tables2 import tables, RequestConfig
 import django_tables2 as tables
 
@@ -35,7 +37,21 @@ def flight_table(request):
 
 
 def flight_details(request, id):
-    locale.setlocale(locale.LC_TIME, "pl_PL.utf8")
-    table = FlightTable(Flight.objects.all())
-    RequestConfig(request).configure(table)
-    return render(request, 'wwwApp/flights.html', {'table': table})
+    return HttpResponse('')
+
+def home(request):
+    return HttpResponse('')
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect(home)
+    else:
+        form = UserCreationForm()
+    return render(request, 'wwwApp/signup.html', {'form': form})
