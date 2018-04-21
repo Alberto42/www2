@@ -20,10 +20,8 @@ from django.urls import path
 from wwwApp import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('flights/', views.flight_table),
     path('flights/<int:id>', views.flight_details),
-    url(r'^login/$', auth_views.login, {'template_name': 'wwwApp/login.html'}, name='login'),
+    url(r'^logout/$', auth_views.logout, {'next_page': '/home'}, name='logout'),
     path('home/', views.home),
     url(r'^signup/$', views.signup, name='signup'),
 ]

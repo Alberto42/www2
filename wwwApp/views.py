@@ -33,33 +33,15 @@ class FlightTable(tables.Table):
             'flight-id': lambda record: str(record.id)
         }
 
-def flight_table(request):
-    locale.setlocale(locale.LC_TIME, "pl_PL.utf8")
-    table = FlightTable(Flight.objects.all())
-    RequestConfig(request).configure(table)
-    return render(request, 'wwwApp/flights.html', {'table': table})
-
-
 def flight_details(request, id):
     return HttpResponse('')
 
 def home(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect(home)
-    else:
-        form = UserCreationForm()
-    signup_contents = render_to_string('wwwApp/signup.html', {'form': form})
-    login_contents = auth_views.login(request,template_name='wwwApp/login.html')
-    return render(request, 'wwwApp/home.html',
-                  {'login': login_contents.rendered_content,'signup' : signup_contents, 'form': form})
-
+    locale.setlocale(locale.LC_TIME, "pl_PL.utf8")
+    table = FlightTable(Flight.objects.all())
+    RequestConfig(request).configure(table)
+    return auth_views.login(request,template_name='wwwApp/home.html',redirect_field_name='home',
+                            extra_context={'user' : str(request.user),'table': table})
 
 def signup(request):
     if request.method == 'POST':
