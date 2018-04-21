@@ -4,7 +4,11 @@ import locale
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
+from django.contrib.auth import views as auth_views
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django_tables2 import tables, RequestConfig
 import django_tables2 as tables
 
@@ -40,7 +44,22 @@ def flight_details(request, id):
     return HttpResponse('')
 
 def home(request):
-    return HttpResponse('')
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect(home)
+    else:
+        form = UserCreationForm()
+    signup_contents = render_to_string('wwwApp/signup.html', {'form': form})
+    login_contents = auth_views.login(request,template_name='wwwApp/login.html')
+    return render(request, 'wwwApp/home.html',
+                  {'login': login_contents.rendered_content,'signup' : signup_contents, 'form': form})
+
 
 def signup(request):
     if request.method == 'POST':
