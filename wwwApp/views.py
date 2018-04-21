@@ -34,7 +34,8 @@ class FlightTable(tables.Table):
         }
 
 def flight_details(request, id):
-    return HttpResponse('')
+    flight = Flight.objects.get(id=id)
+    return render(request, 'wwwApp/details.html', {'flight': flight, 'user' : str(request.user)})
 
 def home(request):
     locale.setlocale(locale.LC_TIME, "pl_PL.utf8")
