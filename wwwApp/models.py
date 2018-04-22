@@ -16,4 +16,10 @@ class Flight(models.Model):
     destination_time= models.DateTimeField(verbose_name="Czas dotarcia")
     plane = models.ForeignKey(Plane, on_delete=models.CASCADE, verbose_name="Samolot")
 
+class Passenger(models.Model):
+    flight = models.ForeignKey(Flight, on_delete=models.CASCADE, related_name="passenger_to_flight")
+    name = models.CharField(max_length=50, verbose_name="Imie")
+    surname = models.CharField(max_length=50, verbose_name="Nazwisko")
+
+
 

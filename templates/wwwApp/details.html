@@ -3,31 +3,63 @@
 {% block contents %}
     <div class="container">
         <div class="row properties">
-            <div class="col-sm-6 " {% comment %}style="border: 1px solid"{% endcomment %}>
+            <div class="col-sm-6 ">
                 <div class="col-sm-4 bordered">Lotnisko startowe</div>
                 <div class="col-sm-8 bordered">{{ flight.starting_airport.name }}</div>
             </div>
-            <div class="col-sm-6" {% comment %}style="border: 1px solid"{% endcomment %}>
+            <div class="col-sm-6">
                 <div class="col-sm-4 bordered">Lotnisko docelowe</div>
                 <div class="col-sm-8 bordered">{{ flight.destination_airport.name }}</div>
             </div>
-            <div class="col-sm-6" {% comment %}style="border: 1px solid"{% endcomment %}>
+            <div class="col-sm-6">
                 <div class="col-sm-4 bordered">Czas odlotu</div>
                 <div class="col-sm-8 bordered">{{ flight.starting_time }}</div>
             </div>
-            <div class="col-sm-6" {% comment %}style="border: 1px solid"{% endcomment %}>
+            <div class="col-sm-6">
                 <div class="col-sm-4 bordered">Czas dotarcia</div>
                 <div class="col-sm-8 bordered">{{ flight.destination_time }}</div>
             </div>
-            <div class="col-sm-6" {% comment %}style="border: 1px solid"{% endcomment %}>
+            <div class="col-sm-6">
                 <div class="col-sm-4 bordered">Samolot</div>
                 <div class="col-sm-8 bordered">{{ flight.plane.name }}</div>
             </div>
-            <br/>
 
+            <div class="col-sm-4">
+                <div class="col-sm-6 bordered">Wolne miejsca</div>
+                <div class="col-sm-6 bordered">{{ free_seats }}</div>
+            </div>
+            <div class="col-sm-4">
+                <div class="col-sm-6 bordered">Zajete miejsca</div>
+                <div class="col-sm-6 bordered">{{ taken_seats}}</div>
+            </div>
+            <div class="col-sm-4">
+                <div class="col-sm-6 bordered">Wszystkie miejsca</div>
+                <div class="col-sm-6 bordered">{{ flight.plane.passengers_limit }}</div>
+            </div>
         </div>
         <div class="row"></div>
     </div>
+    <hr/>
+    Kup bilet:
+    <br/>
+    {% if user == "AnonymousUser" %}
+        Zaloguj się, żeby móc kupować bilety
+    {% elif free_seats == "0" %}
+        Nie ma już wolnych miejsc
+    {% else %}
+        <form method="post">
+            {% csrf_token %}
+            Imię:
+            <input type="text" name="name"/>
+            Nazwisko:
+            <input type="text" name="surname"/>
+            <button type="submit">Kup</button>
+        </form>
+    {% endif %}
+    <hr/>
+    {% load render_table from django_tables2 %}
+    {% render_table table %}
+    </br>
     {#starting airport name: {{ flight.starting_airport.name }} <br/>#}
     {#other property<br/>#}
     {#other property<br/>#}

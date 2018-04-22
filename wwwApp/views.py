@@ -32,14 +32,27 @@ class FlightTable(tables.Table):
         row_attrs = {
             'flight-id': lambda record: str(record.id)
         }
+class PassangersTable(tables.Table):
+    class Meta:
+        model = Passenger
+        template_name = 'django_tables2/bootstrap.html'
+        exclude=['id', 'flight']
 
 def flight_details(request, id):
     flight = Flight.objects.get(id=id)
-    # return render(request, 'wwwApp/details.html', {'flight': flight, 'user' : str(request.user)})
+    if (request.method == 'POST'):
+        Passenger.objects.create(flight=flight, name=request.POST['name'], surname=request.POST['surname'])
+
     flight.starting_time = FlightTable.render_starting_time(None, flight)
     flight.destination_time = FlightTable.render_destination_time(None, flight)
+
+    passengers = Passenger.objects.filter(flight=flight)
+    table = PassangersTable(passengers)
+    RequestConfig(request).configure(table)
     return auth_views.login(request, template_name='wwwApp/details.html', redirect_field_name='home',
-                            extra_context={'user': str(request.user), 'flight': flight })
+                            extra_context={'user': str(request.user), 'flight': flight, 'table': table,
+                                           'taken_seats' : len(passengers),
+                                           'free_seats' : flight.plane.passengers_limit - len(passengers)})
 
 def home(request):
     locale.setlocale(locale.LC_TIME, "pl_PL.utf8")
