@@ -25,10 +25,10 @@ Airport.objects.all().delete()
 random.seed(42)
 
 for (plane, i) in zip(cycle(planes), range(0, PLANES_COUNT)):
-    Plane.objects.create(name=plane)
+    Plane.objects.create(name=plane, passengers_limit=random.randrange(20, 60))
 
 for (airport, i) in zip(cycle(airports), range(0, AIRPORTS_COUNT)):
-    Airport.objects.create(name=airport, passengers_limit=random.randrange(20, 60))
+    Airport.objects.create(name=airport)
 
 for plane in Plane.objects.all():
     start_airport = random.choice(tuple(Airport.objects.all()))

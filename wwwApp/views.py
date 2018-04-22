@@ -35,7 +35,11 @@ class FlightTable(tables.Table):
 
 def flight_details(request, id):
     flight = Flight.objects.get(id=id)
-    return render(request, 'wwwApp/details.html', {'flight': flight, 'user' : str(request.user)})
+    # return render(request, 'wwwApp/details.html', {'flight': flight, 'user' : str(request.user)})
+    flight.starting_time = FlightTable.render_starting_time(None, flight)
+    flight.destination_time = FlightTable.render_destination_time(None, flight)
+    return auth_views.login(request, template_name='wwwApp/details.html', redirect_field_name='home',
+                            extra_context={'user': str(request.user), 'flight': flight })
 
 def home(request):
     locale.setlocale(locale.LC_TIME, "pl_PL.utf8")

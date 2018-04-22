@@ -4,10 +4,10 @@ from django.db import models
 
 class Airport(models.Model):
     name = models.CharField(max_length=50, verbose_name="Lotnisko")
-    passengers_limit = models.IntegerField()
 
 class Plane(models.Model):
     name = models.CharField(max_length=50, verbose_name="Samolot")
+    passengers_limit = models.IntegerField()
 
 class Flight(models.Model):
     starting_airport = models.ForeignKey(Airport, on_delete=models.CASCADE, related_name="start_airporl_to_airport")

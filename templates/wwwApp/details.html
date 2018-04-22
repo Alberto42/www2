@@ -1,13 +1,40 @@
 {% extends 'wwwApp/base.html' %}
 
 {% block contents %}
-starting airport name: {{ flight.starting_airport.name }} <br/>
-other property<br/>
-other property<br/>
-other property<br/>
-other property<br/>
-Liczba zajętych miejsc:<br/>
-Liczba wolnych miejsc:<br/>
-Dodawanie pasazerow<br/>
-Lista pasazerow<br/>
+    <div class="container">
+        <div class="row properties">
+            <div class="col-sm-6 " {% comment %}style="border: 1px solid"{% endcomment %}>
+                <div class="col-sm-4 bordered">Lotnisko startowe</div>
+                <div class="col-sm-8 bordered">{{ flight.starting_airport.name }}</div>
+            </div>
+            <div class="col-sm-6" {% comment %}style="border: 1px solid"{% endcomment %}>
+                <div class="col-sm-4 bordered">Lotnisko docelowe</div>
+                <div class="col-sm-8 bordered">{{ flight.destination_airport.name }}</div>
+            </div>
+            <div class="col-sm-6" {% comment %}style="border: 1px solid"{% endcomment %}>
+                <div class="col-sm-4 bordered">Czas odlotu</div>
+                <div class="col-sm-8 bordered">{{ flight.starting_time }}</div>
+            </div>
+            <div class="col-sm-6" {% comment %}style="border: 1px solid"{% endcomment %}>
+                <div class="col-sm-4 bordered">Czas dotarcia</div>
+                <div class="col-sm-8 bordered">{{ flight.destination_time }}</div>
+            </div>
+            <div class="col-sm-6" {% comment %}style="border: 1px solid"{% endcomment %}>
+                <div class="col-sm-4 bordered">Samolot</div>
+                <div class="col-sm-8 bordered">{{ flight.plane.name }}</div>
+            </div>
+            <br/>
+
+        </div>
+        <div class="row"></div>
+    </div>
+    {#starting airport name: {{ flight.starting_airport.name }} <br/>#}
+    {#other property<br/>#}
+    {#other property<br/>#}
+    {#other property<br/>#}
+    {#other property<br/>#}
+    {#Liczba zajętych miejsc:<br/>#}
+    {#Liczba wolnych miejsc:<br/>#}
+    {#Dodawanie pasazerow<br/>#}
+    {#Lista pasazerow<br/>#}
 {% endblock %}
