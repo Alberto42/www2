@@ -38,10 +38,13 @@ class PassangersTable(tables.Table):
         template_name = 'django_tables2/bootstrap.html'
         exclude=['id', 'flight']
 
+def buy_ticket(request):
+    flight = Flight.objects.get(id=request.POST['id'])
+    Passenger.objects.create(flight=flight, name=request.POST['name'], surname=request.POST['surname'])
+    return redirect(flight_details,request.POST['id'])
+
 def flight_details(request, id):
     flight = Flight.objects.get(id=id)
-    if (request.method == 'POST'):
-        Passenger.objects.create(flight=flight, name=request.POST['name'], surname=request.POST['surname'])
 
     flight.starting_time = FlightTable.render_starting_time(None, flight)
     flight.destination_time = FlightTable.render_destination_time(None, flight)

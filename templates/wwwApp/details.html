@@ -44,11 +44,12 @@
     <br/>
     {% if user == "AnonymousUser" %}
         Zaloguj się, żeby móc kupować bilety
-    {% elif free_seats == "0" %}
+    {% elif free_seats == 0 %}
         Nie ma już wolnych miejsc
     {% else %}
-        <form method="post">
+        <form method="post" action="/buy_ticket">
             {% csrf_token %}
+            <input type="hidden" value="{{ flight.id }}" name="id" />
             Imię:
             <input type="text" name="name"/>
             Nazwisko:
