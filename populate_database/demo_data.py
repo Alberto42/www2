@@ -11,6 +11,8 @@ setup()
 
 from populate_database.planes import planes
 from populate_database.airports import airports
+from populate_database.names import names
+from populate_database.surnames import surnames
 from wwwApp.models import *
 from itertools import cycle
 
@@ -59,9 +61,15 @@ for plane in Plane.objects.all():
 
 logging.info("Create passengers:")
 i = 0
+
+
+def generate_passengers_for_flight(flight, seats_taken):
+    global i
+    for i in range(seats_taken):
+        Passenger.objects.create(flight=flight, name=random.choice(names),
+                                 surname=random.choice(surnames))
+
+
 for flight in Flight.objects.all():
     logging.info("Passengers if Flight: " + str(i))
-    seats_taken = max(0, flight.plane.passengers_limit - random.randrange(1, 60))
-    for i in range(seats_taken):
-        Passenger.objects.create(flight=flight, name="Passenger_name_" + str(i),
-                                 surname="Passenger_surname_" + str(i))
+    generate_passengers_for_flight(flight, random.randrange(0, 10))
