@@ -1,5 +1,16 @@
 {% extends 'wwwApp/base.html' %}
 
+{% block header %}
+    <div class="container">
+        <h1>Przeloty samolotów pasażerskich
+            <small>Strona główna</small>
+        </h1>
+    </div>
+{% endblock %}
+
 {% block contents %}
-{% include 'wwwApp/flights.html' %}
+
+    {% include 'wwwApp/login.html' %}
+    {% include 'wwwApp/flights.html' %}
+
 {% endblock %}

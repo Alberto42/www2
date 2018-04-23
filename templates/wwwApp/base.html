@@ -2,18 +2,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="{% static 'wwwApp/style.css' %}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="{% static 'wwwApp/style.css' %}"/>
     <meta charset="UTF-8">
-    <title>Przeloty</title>
+    <title>Przeloty samolotów pasażerskich</title>
 </head>
 <body>
 <header>
-    <h1>Przeloty Samolotów </h1>
+    {% block header %}
+    {% endblock %}
 </header>
-<hr/>
-{% include 'wwwApp/login.html' %}
-<hr/>
 {% block contents %}
 {% endblock %}
 </body>

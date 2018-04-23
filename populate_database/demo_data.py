@@ -36,7 +36,7 @@ for (airport, i) in zip(cycle(airports), range(0, AIRPORTS_COUNT)):
     Airport.objects.create(name=airport)
 
 logging.info("Create flights:")
-i=0
+i = 0
 for plane in Plane.objects.all():
     logging.info("Flights for plane: " + str(i))
     start_airport = random.choice(tuple(Airport.objects.all()))
@@ -61,7 +61,7 @@ logging.info("Create passengers:")
 i = 0
 for flight in Flight.objects.all():
     logging.info("Passengers if Flight: " + str(i))
-    seats_taken = max(0,flight.plane.passengers_limit-random.randrange(1,60))
+    seats_taken = max(0, flight.plane.passengers_limit - random.randrange(1, 60))
     for i in range(seats_taken):
-        Passenger.objects.create(flight=flight,name="Passenger_name_" + str(i),
-                                 surname= "Passenger_surname_" + str(i))
+        Passenger.objects.create(flight=flight, name="Passenger_name_" + str(i),
+                                 surname="Passenger_surname_" + str(i))
