@@ -19,7 +19,7 @@ from itertools import cycle
 SIZE = 50;
 PLANES_COUNT = SIZE
 AIRPORTS_COUNT = SIZE
-FLIGHTS_FOR_EACH_PLANE_COUNT = 5
+FLIGHTS_FOR_EACH_PLANE_COUNT = 50
 
 Plane.objects.all().delete()
 Flight.objects.all().delete()
