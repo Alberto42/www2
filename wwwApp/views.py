@@ -4,6 +4,7 @@ import locale
 from django.contrib.auth import login, password_validation
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import views as auth_views
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 from django_tables2 import tables, RequestConfig
@@ -15,6 +16,7 @@ from django.contrib.auth import (
 )
 
 from django.utils.translation import gettext, gettext_lazy as _
+from rest_framework import serializers
 
 from wwwApp.models import *
 
@@ -107,6 +109,28 @@ def buy_ticket(request):
     flight = Flight.objects.get(id=request.POST['id'])
     Passenger.objects.create(flight=flight, name=request.POST['name'], surname=request.POST['surname'])
     return redirect(flight_details, request.POST['id'])
+
+class CrewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Crew
+        fields = '__all__'
+
+
+def CrewRestWebService(request):
+    crews = Crew.objects.all();
+    serializer = CrewSerializer(crews,many=True);
+    return JsonResponse(serializer.data, safe=False);
+
+class FlightsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Flight
+        fields = '__all__'
+
+
+def FlightRestWebService(request):
+    flights = Flight.objects.all();
+    serializer = FlightsSerializer(flights,many=True);
+    return JsonResponse(serializer.data, safe=False);
 
 def air_crew(request):
     return render(request, 'wwwApp/air_crew.html');

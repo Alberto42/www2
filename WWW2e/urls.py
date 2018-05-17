@@ -26,4 +26,6 @@ urlpatterns = [
     path('buy_ticket', views.buy_ticket),
     url(r'^signup/$', views.signup, name='signup'),
     path('air_crew/', views.air_crew),
+    path('crews_service/', views.CrewRestWebService),
+    path('flights_service/', views.FlightRestWebService),
 ]
