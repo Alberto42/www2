@@ -11,6 +11,11 @@
 {% block contents %}
 
     {% include 'wwwApp/login.html' %}
+    {% if user == "AnonymousUser" %}
+            <h4>Zaloguj się, żeby móc zarządzać załogami</h4>
+    {% else %}
+        <a href="/air_crew">Zarządzanie załogami</a>
+    {% endif %}
     {% include 'wwwApp/flights.html' %}
 
 {% endblock %}

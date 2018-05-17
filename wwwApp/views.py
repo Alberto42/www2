@@ -107,3 +107,6 @@ def buy_ticket(request):
     flight = Flight.objects.get(id=request.POST['id'])
     Passenger.objects.create(flight=flight, name=request.POST['name'], surname=request.POST['surname'])
     return redirect(flight_details, request.POST['id'])
+
+def air_crew(request):
+    return render(request, 'wwwApp/air_crew.html');

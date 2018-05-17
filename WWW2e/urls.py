@@ -25,4 +25,5 @@ urlpatterns = [
     path('home/', views.home),
     path('buy_ticket', views.buy_ticket),
     url(r'^signup/$', views.signup, name='signup'),
+    path('air_crew/', views.air_crew),
 ]
