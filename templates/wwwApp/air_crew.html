@@ -37,25 +37,25 @@
 
                     <thead>
                     <tr>
-                        <th class="starting_airport">Lotnisko startowe</th>
-                        <th class="starting_time">Czas Odlotu</th>
-                        <th class="destination_airport">Lotnisko docelowe</th>
-                        <th class="destination_time">Czas Dotarcia</th>
-                        <th class="crew">Załoga</th>
+                        <th>Lotnisko startowe</th>
+                        <th>Czas Odlotu</th>
+                        <th>Lotnisko docelowe</th>
+                        <th>Czas Dotarcia</th>
+                        <th>Załoga</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr class="clickable-row" flight-id="8647" class="even">
+                    <tbody id="flight_table_body">
+                    <tr class="clickable-row">
 
-                        <td class="starting_airport">Akron Fulton International Airport</td>
+                        <td>Akron Fulton International Airport</td>
 
-                        <td class="starting_time">wto, 01 maj 2018 06:36:00</td>
+                        <td>wto, 01 maj 2018 06:36:00</td>
 
-                        <td class="destination_airport">Ted Stevens Anchorage International Airport</td>
+                        <td>Ted Stevens Anchorage International Airport</td>
 
-                        <td class="destination_time">wto, 01 maj 2018 08:54:00</td>
+                        <td>wto, 01 maj 2018 08:54:00</td>
 
-                        <td class="crew">—</td>
+                        <td>—</td>
 
                     </tr>
                     </tbody>
@@ -70,16 +70,13 @@
 
                     <thead>
                     <tr>
-                        <th>Imie kapitana</th>
-                        <th>Nazwisko kapitana</th>
+                        <th>Kapitan</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr class="clickable-row" class="even">
+                    <tbody id="crew_table_body">
+                    <tr class="clickable-row">
 
-                        <td>Teo</td>
-
-                        <td>Lewandowski</td>
+                        <td>Teo Lewandowski</td>
 
                     </tr>
                     </tbody>
@@ -96,9 +93,14 @@
     dataType: 'json',
     success: function (data) {
         $.each(data, function(index, element) {
-            $('body').append($('<div>', {
-                text: element.name
-            }));
+            var node = jQuery.parseHTML(
+                "<tr class=\"clickable-row\">" +
+                    "<td></td>" +
+                "</tr>"
+            );
+            var captain = document.createTextNode(element.captain_name + " " + element.captain_surname);
+            node[0].firstChild.appendChild(captain);
+            document.getElementById("crew_table_body").appendChild(node[0])
         });
     }
 });
