@@ -1,10 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/wwwApp/style.css"/>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Zarządzanie załogami</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
+<header>
 
+    <div class="container">
+        <h1>Przeloty samolotów pasażerskich
+            <small>Zarządzanie załogami</small>
+        </h1>
+    </div>
+
+</header>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3 bordered">Tu bedzie kalendarz do wybrania dnia</div>
+        <div class="col-sm-3 bordered">
+            Tu bedzie przycisk "Przypisz zaloge"
+        </div>
+        <div class="col-sm-3 bordered">
+            Tu bedzie wstecz
+        </div>
+    </div>
+    <div class="row">
+        <p>Aby przypisać załogę do lotu, wybierz lot oraz załogę a następnie kliknij <mark>Przypisz załogę</mark></p>
+        <div class="col-sm-8 bordered panel">
+            <div class="table-container">
+                <table class="table table-hover table-condensed table-responsive">
+
+
+                    <thead>
+                    <tr>
+                        <th class="starting_airport">Lotnisko startowe</th>
+                        <th class="starting_time">Czas Odlotu</th>
+                        <th class="destination_airport">Lotnisko docelowe</th>
+                        <th class="destination_time">Czas Dotarcia</th>
+                        <th class="crew">Załoga</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="clickable-row" flight-id="8647" class="even">
+
+                        <td class="starting_airport">Akron Fulton International Airport</td>
+
+                        <td class="starting_time">wto, 01 maj 2018 06:36:00</td>
+
+                        <td class="destination_airport">Ted Stevens Anchorage International Airport</td>
+
+                        <td class="destination_time">wto, 01 maj 2018 08:54:00</td>
+
+                        <td class="crew">—</td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-4 bordered panel">
+            <div class="table-container">
+
+                <table class="table table-hover table-condensed table-responsive">
+
+
+                    <thead>
+                    <tr>
+                        <th>Imie kapitana</th>
+                        <th>Nazwisko kapitana</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="clickable-row" class="even">
+
+                        <td>Teo</td>
+
+                        <td>Lewandowski</td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $.ajax({
+    type: 'GET',
+    url: '/crews_service/',
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function(index, element) {
+            $('body').append($('<div>', {
+                text: element.name
+            }));
+        });
+    }
+});
+</script>
 </body>
 </html>
