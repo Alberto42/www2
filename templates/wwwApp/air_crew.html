@@ -9,6 +9,58 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+    function fetchFlights(date) {
+        $.ajax({
+            type: 'GET',
+            url: '/flights_service/',
+            dataType: 'json',
+            data: {
+                date: date
+            },
+            success: function (data) {
+                var flight_table_body = document.getElementById("flight_table_body");
+                flight_table_body.innerHTML = '';
+                $.each(data, function (index, element) {
+                    var node = jQuery.parseHTML(
+                        "<tr class=\"clickable-row\">" +
+                        "<td></td>" +
+                        "<td></td>" +
+                        "<td></td>" +
+                        "<td></td>" +
+                        "<td></td>" +
+                        "</tr>"
+                    );
+                    var properties = ["starting_airport_name", "starting_time_formatted", "destination_airport_name",
+                        "destination_time_formatted", "crew_name"];
+                    for (var i = 0; i < properties.length; i++) {
+                        node[0].childNodes[i].appendChild(document.createTextNode(element[properties[i]]));
+                    }
+                    flight_table_body.appendChild(node[0]);
+                });
+            }
+        });
+    }
+
+    $.ajax({
+        type: 'GET',
+        url: '/crews_service/',
+        dataType: 'json',
+        success: function (data) {
+            $.each(data, function (index, element) {
+                var node = jQuery.parseHTML(
+                    "<tr class=\"clickable-row\">" +
+                    "<td></td>" +
+                    "</tr>"
+                );
+                var captain = document.createTextNode(element.captain_name + " " + element.captain_surname);
+                node[0].firstChild.appendChild(captain);
+                document.getElementById("crew_table_body").appendChild(node[0]);
+            });
+        }
+    });
+    ;
+</script>
 </head>
 <body>
 <header>
@@ -24,10 +76,15 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-3 bordered">
-            <p>Date: <input type="text" id="datepicker"></p>
+            <p>Date: <input type="text" id="datepicker"/></p>
             <script>
                 $(function () {
-                    $("#datepicker").datepicker();
+                    $("#datepicker").datepicker({
+                        onSelect: function (dateText) {
+                            fetchFlights(dateText)
+                        },
+                        dateFormat: "yy-mm-dd"
+                    });
                 });
             </script>
         </div>
@@ -79,50 +136,5 @@
         </div>
     </div>
 </div>
-
-<script>
-    $.ajax({
-    type: 'GET',
-    url: '/crews_service/',
-    dataType: 'json',
-    success: function (data) {
-        $.each(data, function(index, element) {
-            var node = jQuery.parseHTML(
-                "<tr class=\"clickable-row\">" +
-                    "<td></td>" +
-                "</tr>"
-            );
-            var captain = document.createTextNode(element.captain_name + " " + element.captain_surname);
-            node[0].firstChild.appendChild(captain);
-            document.getElementById("crew_table_body").appendChild(node[0]);
-        });
-    }
-});
-    $.ajax({
-    type: 'GET',
-    url: '/flights_service/',
-    dataType: 'json',
-    success: function (data) {
-        $.each(data, function(index, element) {
-            var node = jQuery.parseHTML(
-                "<tr class=\"clickable-row\">" +
-                    "<td></td>" +
-                    "<td></td>" +
-                    "<td></td>" +
-                    "<td></td>" +
-                    "<td></td>" +
-                "</tr>"
-            );
-            var properties = ["starting_airport_name","starting_time_formatted","destination_airport_name",
-                "destination_time_formatted","crew_name"];
-            for(var i=0; i < properties.length; i++) {
-                node[0].childNodes[i].appendChild(document.createTextNode(element[properties[i]]));
-            }
-            {#node[0].childNodes[0].appendChild(document.createTextNode(element.starting_airport_name));#}
-            document.getElementById("flight_table_body").appendChild(node[0]);
-        });
-    }
-});
-</script>
 </body>
 </html>

@@ -1,10 +1,13 @@
-import datetime
 import locale
+from datetime import timedelta
+
 from django.contrib.auth import login, password_validation
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import views as auth_views
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.utils.dateparse import parse_datetime
+from django.utils.datetime_safe import datetime
 
 from django_tables2 import tables, RequestConfig
 import django_tables2 as tables
@@ -126,7 +129,14 @@ class FlightsSerializer(serializers.ModelSerializer):
 
 
 def FlightRestWebService(request):
-    flights = Flight.objects.all()
+    if 'date' in request.GET:
+        format = '%Y-%m-%d'
+        date_str = request.GET["date"]
+        day = datetime.strptime(date_str, format)
+        next_day = day + timedelta(days=1)
+        flights = Flight.objects.filter(starting_time__range=[day.strftime(format),next_day.strftime(format)])
+    else:
+        flights = Flight.objects.all()
     serializer = FlightsSerializer(flights,many=True)
     return JsonResponse(serializer.data, safe=False)
 
