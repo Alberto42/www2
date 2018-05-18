@@ -124,7 +124,7 @@ class FlightsSerializer(serializers.ModelSerializer):
     pass
     class Meta:
         model = Flight
-        fields = ('starting_airport_name','starting_time','destination_airport_name','destination_time','crew_name',
+        fields = ('id','starting_airport_name','starting_time','destination_airport_name','destination_time','crew_name',
                   'starting_time_formatted','destination_time_formatted')
 
 

@@ -32,5 +32,7 @@ body {
 .scrollable_table {
     overflow-y: scroll;
     height: 600px;
-
+}
+.clickable-row {
+    cursor: pointer;
 }
