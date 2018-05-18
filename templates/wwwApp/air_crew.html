@@ -10,14 +10,33 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
-        var selected_flight = undefined, selected_crew = undefined
+        var selected_flight = undefined, selected_crew = undefined, date;
 
         function add_relation() {
             selected_flight.removeAttribute("style");
             selected_crew.removeAttribute("style");
+            document.getElementById("add_relation").setAttribute("disabled", "");
+            $.ajax({
+                type: 'GET',
+                url: '/add_relation_service/',
+                dataType: 'json',
+                data: {
+                    crew_id: selected_crew.getAttribute("id"),
+                    flight_id: selected_flight.getAttribute("id")
+                },
+                success: function (data) {
+                    alert = document.getElementById("alert");
+                    alert.setAttribute("class","alert " + data.alert_class);
+                    alert.appendChild(document.createTextNode(data.alert));
+                    fetchFlights();
+                    $("#alert").fadeTo(2000, 500).slideUp(500, function() {
+                        $("#alert").slideUp(500);
+                        alert.removeChild(alert.lastChild);
+                    });
+                }
+            });
             selected_flight = undefined;
             selected_crew = undefined;
-            document.getElementById("add_relation").setAttribute("disabled","");
 
         }
         function check_if_relation_is_selected() {
@@ -44,7 +63,7 @@
             check_if_relation_is_selected();
         }
 
-        function fetchFlights(date) {
+        function fetchFlights() {
             $.ajax({
                 type: 'GET',
                 url: '/flights_service/',
@@ -95,7 +114,6 @@
                 });
             }
         });
-        ;
     </script>
 </head>
 <body>
@@ -117,7 +135,8 @@
                 $(function () {
                     $("#datepicker").datepicker({
                         onSelect: function (dateText) {
-                            fetchFlights(dateText)
+                            date = dateText
+                            fetchFlights()
                         },
                         dateFormat: "yy-mm-dd"
                     });
@@ -131,6 +150,11 @@
             <a href="/home">Wstecz</a>
         </div>
     </div>
+    <div class="alert" id="alert">
+    </div>
+    <script>
+        $("#alert").hide();
+    </script>
     <div class="row">
         <p>Aby przypisać załogę do lotu, wybierz lot oraz załogę a następnie kliknij <mark>Przypisz załogę</mark></p>
         <div class="col-sm-10 panel scrollable_table">
