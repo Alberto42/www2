@@ -18,9 +18,7 @@ from django.utils.translation import gettext, gettext_lazy as _
 from rest_framework import serializers
 
 from wwwApp.models import *
-
-
-# Create your views here.
+from wwwApp.utils import date_format
 
 
 class FlightTable(tables.Table):
@@ -30,12 +28,11 @@ class FlightTable(tables.Table):
 
     def render_starting_time(self, record):
         locale.setlocale(locale.LC_TIME, "pl_PL.utf8")
-        return record.starting_time.strftime("%a, %d %b %Y %H:%M:%S")
+        return record.starting_time.strftime(date_format)
 
     def render_destination_time(self, record):
         locale.setlocale(locale.LC_TIME, "pl_PL.utf8")
-        return record.destination_time.strftime("%a, %d %b %Y %H:%M:%S")
-
+        return record.destination_time.strftime(date_format)
     class Meta:
         model = Flight
         template_name = 'django_tables2/bootstrap.html'
@@ -116,20 +113,22 @@ class CrewSerializer(serializers.ModelSerializer):
 
 
 def CrewRestWebService(request):
-    crews = Crew.objects.all();
-    serializer = CrewSerializer(crews,many=True);
-    return JsonResponse(serializer.data, safe=False);
+    crews = Crew.objects.all()
+    serializer = CrewSerializer(crews,many=True)
+    return JsonResponse(serializer.data, safe=False)
 
 class FlightsSerializer(serializers.ModelSerializer):
+    pass
     class Meta:
         model = Flight
-        fields = '__all__'
+        fields = ('starting_airport_name','starting_time','destination_airport_name','destination_time','crew_name',
+                  'starting_time_formatted','destination_time_formatted')
 
 
 def FlightRestWebService(request):
-    flights = Flight.objects.all();
-    serializer = FlightsSerializer(flights,many=True);
-    return JsonResponse(serializer.data, safe=False);
+    flights = Flight.objects.all()
+    serializer = FlightsSerializer(flights,many=True)
+    return JsonResponse(serializer.data, safe=False)
 
 def air_crew(request):
-    return render(request, 'wwwApp/air_crew.html');
+    return render(request, 'wwwApp/air_crew.html')

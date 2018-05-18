@@ -29,3 +29,8 @@ body {
     display: inline-block;
     text-align: right;
 }
+.scrollable_table {
+    overflow-y: scroll;
+    height: 600px;
+
+}
