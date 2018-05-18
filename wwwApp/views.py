@@ -1,6 +1,5 @@
 import datetime
 import locale
-
 from django.contrib.auth import login, password_validation
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import views as auth_views

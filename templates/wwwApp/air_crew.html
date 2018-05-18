@@ -100,7 +100,27 @@
             );
             var captain = document.createTextNode(element.captain_name + " " + element.captain_surname);
             node[0].firstChild.appendChild(captain);
-            document.getElementById("crew_table_body").appendChild(node[0])
+            document.getElementById("crew_table_body").appendChild(node[0]);
+        });
+    }
+});
+    $.ajax({
+    type: 'GET',
+    url: '/flights_service/',
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function(index, element) {
+            var node = jQuery.parseHTML(
+                "<tr class=\"clickable-row\">" +
+                    "<td></td>" +
+                    "<td></td>" +
+                    "<td></td>" +
+                    "<td></td>" +
+                    "<td></td>" +
+                "</tr>"
+            );
+            node[0].childNodes[0].appendChild(document.createTextNode(element.starting_airport.name));
+            document.getElementById("flight_table_body").appendChild(node[0]);
         });
     }
 });
