@@ -15,6 +15,7 @@ function add_relation() {
         success: function (data) {
             alert = document.getElementById("alert");
             alert.setAttribute("class", "alert " + data.alert_class);
+            alert.innerHTML = ''
             alert.appendChild(document.createTextNode(data.alert));
             fetchFlights();
             $("#alert").fadeTo(2000, 500).slideUp(500, function () {

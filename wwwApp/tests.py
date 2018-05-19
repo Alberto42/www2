@@ -1,6 +1,8 @@
+import time
 import unittest
 
 # Create your tests here.
+from datetime import datetime
 from urllib.parse import urljoin
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
@@ -14,10 +16,10 @@ import wwwApp
 from wwwApp.models import Flight, Crew, Airport, Plane, Passenger
 from wwwApp.utils import flight_intersect_crew_flights
 
-day1 = date(year=1000, month=3, day=1)
-day2 = date(year=1000, month=3, day=2)
-day3 = date(year=1000, month=3, day=3)
-day4 = date(year=1000, month=3, day=4)
+day1 = datetime(year=1000, month=3, day=1, minute=5)
+day2 = datetime(year=1000, month=3, day=2, minute=5)
+day3 = datetime(year=1000, month=3, day=3, minute=5)
+day4 = datetime(year=1000, month=3, day=4, minute=5)
 
 class TestUtils(unittest.TestCase):
     def __init__(self, methodName='runTest'):
@@ -38,7 +40,7 @@ def test_database():
     airport = Airport.objects.create(name="Airport")
     airport2 = Airport.objects.create(name="Airport2")
     plane = Plane.objects.create(passengers_limit=42, name="Plane")
-    crew = Crew.objects.create(id=1)
+    crew = Crew.objects.create(id=1, captain_name="Jack", captain_surname="Sparrow")
     Flight.objects.create(id=1,starting_time=day1, destination_time=day3, starting_airport=airport,
                               destination_airport=airport2, plane=plane)
     Flight.objects.create(id=2, starting_time=day2, destination_time=day4, starting_airport=airport,
@@ -90,42 +92,58 @@ class BasicTestWithSelenium(StaticLiveServerTestCase):
         super(BasicTestWithSelenium, cls).tearDownClass()
         cls.selenium.quit()
 
-    # def test_add_new_passenger(self):
-    #     # given
-    #     flight = Flight.objects.get(id=1)
-    #     passenger = Passenger.objects.filter(flight=flight)
-    #     self.assertFalse(passenger.exists())
-    #
-    #     url = urljoin(self.live_server_url, '/home/')
-    #     self.selenium.get(url)
-    #
-    #     self.signup()
-    #
-    #     self.selenium.find_element_by_class_name("clickable-row").click()
-    #
-    #     # when
-    #     self.selenium.find_element_by_id("name").send_keys("Imie")
-    #     self.selenium.find_element_by_id("surname").send_keys("Nazwisko")
-    #     self.selenium.find_element_by_id("buy").click()
-    #
-    #     # then
-    #     expectedText = 'Imie Nazwisko'
-    #     actualText = self.selenium.find_element_by_class_name("clickable-row").text
-    #     self.assertEqual(expectedText,actualText)
-    #
-    #     passenger = Passenger.objects.filter(flight=flight)
-    #     self.assertTrue(passenger.exists())
+    def test_add_new_passenger(self):
+        # given
+        flight = Flight.objects.get(id=1)
+        passenger = Passenger.objects.filter(flight=flight)
+        self.assertFalse(passenger.exists())
+
+        url = urljoin(self.live_server_url, '/home/')
+        self.selenium.get(url)
+
+        self.signup()
+
+        self.selenium.find_element_by_class_name("clickable-row").click()
+
+        # when
+        self.selenium.find_element_by_id("name").send_keys("Imie")
+        self.selenium.find_element_by_id("surname").send_keys("Nazwisko")
+        self.selenium.find_element_by_id("buy").click()
+
+        # then
+        expectedText = 'Imie Nazwisko'
+        actualText = self.selenium.find_element_by_class_name("clickable-row").text
+        self.assertEqual(expectedText,actualText)
+
+        passenger = Passenger.objects.filter(flight=flight)
+        self.assertTrue(passenger.exists())
 
     def test_assign_crew_to_many_flights(self):
+        # given
         url = urljoin(self.live_server_url, '/home/')
         self.selenium.get(url)
 
         self.signup()
         self.selenium.find_element_by_id("air_crew").click()
+
+        # when
         self.selenium.find_element_by_id("datepicker").send_keys("1000-03-02\n")
-        # self.selenium.fin
-        # self.selenium.find_element_by_id("")
-        print('asdf')
+        time.sleep(0.1)
+
+        self.selenium.find_element_by_xpath("//*[@id='flight_table_body']/tr[1]").click()
+        self.selenium.find_element_by_xpath("//*[@id='crew_table_body']/tr[1]").click()
+        self.selenium.find_element_by_id("add_relation").click()
+
+        self.selenium.find_element_by_id("datepicker").send_keys("\b\b\b\b\b\b\b\b\b\b\b1000-03-01\n")
+        time.sleep(0.1)
+        self.selenium.find_element_by_xpath("//*[@id='flight_table_body']/tr[1]").click()
+        self.selenium.find_element_by_xpath("//*[@id='crew_table_body']/tr[1]").click()
+        self.selenium.find_element_by_id("add_relation").click()
+
+        # then
+        actualAlertText = self.selenium.find_element_by_id("alert").text
+        expectedAlertText = 'Porażka! Załoga w tym czasie pracuje w innym samolocie'
+        self.assertEqual(expectedAlertText,actualAlertText)
 
 
     def signup(self):
