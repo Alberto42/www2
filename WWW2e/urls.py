@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib.auth import views as auth_views
 from django.conf.urls import url
-from django.contrib import admin
 from django.urls import path
-from wwwApp import views
+
+import wwwApp.views.WebServices
+from wwwApp.views import views
 
 urlpatterns = [
     path('flights/<int:id>', views.flight_details),
@@ -26,6 +27,7 @@ urlpatterns = [
     path('buy_ticket', views.buy_ticket),
     url(r'^signup/$', views.signup, name='signup'),
     path('air_crew/', views.air_crew),
-    path('crews_service/', views.CrewRestWebService),
-    path('flights_service/', views.FlightRestWebService),
+    path('crews_service/', wwwApp.views.WebServices.CrewRestWebService),
+    path('flights_service/', wwwApp.views.WebServices.FlightRestWebService),
+    path('add_relation_service/', wwwApp.views.WebServices.AddRelationWebService),
 ]

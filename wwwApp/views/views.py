@@ -1,15 +1,9 @@
-import locale
-from datetime import timedelta
-
 from django.contrib.auth import login, password_validation
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import views as auth_views
-from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from django.utils.dateparse import parse_datetime
-from django.utils.datetime_safe import datetime
 
-from django_tables2 import tables, RequestConfig
+from django_tables2 import RequestConfig
 import django_tables2 as tables
 
 from django import forms
@@ -17,8 +11,7 @@ from django.contrib.auth import (
     authenticate,
 )
 
-from django.utils.translation import gettext, gettext_lazy as _
-from rest_framework import serializers
+from django.utils.translation import gettext_lazy as _
 
 from wwwApp.models import *
 from wwwApp.utils import date_format
@@ -36,6 +29,7 @@ class FlightTable(tables.Table):
     def render_destination_time(self, record):
         locale.setlocale(locale.LC_TIME, "pl_PL.utf8")
         return record.destination_time.strftime(date_format)
+
     class Meta:
         model = Flight
         template_name = 'django_tables2/bootstrap.html'
@@ -89,6 +83,7 @@ class UserCreationFormPl(UserCreationForm):
         help_text=_("Enter the same password as before, for verification."),
     )
 
+
 def signup(request):
     if request.method == 'POST':
         form = UserCreationFormPl(request.POST)
@@ -109,36 +104,6 @@ def buy_ticket(request):
     Passenger.objects.create(flight=flight, name=request.POST['name'], surname=request.POST['surname'])
     return redirect(flight_details, request.POST['id'])
 
-class CrewSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Crew
-        fields = '__all__'
-
-
-def CrewRestWebService(request):
-    crews = Crew.objects.all()
-    serializer = CrewSerializer(crews,many=True)
-    return JsonResponse(serializer.data, safe=False)
-
-class FlightsSerializer(serializers.ModelSerializer):
-    pass
-    class Meta:
-        model = Flight
-        fields = ('id','starting_airport_name','starting_time','destination_airport_name','destination_time','crew_name',
-                  'starting_time_formatted','destination_time_formatted')
-
-
-def FlightRestWebService(request):
-    if 'date' in request.GET:
-        format = '%Y-%m-%d'
-        date_str = request.GET["date"]
-        day = datetime.strptime(date_str, format)
-        next_day = day + timedelta(days=1)
-        flights = Flight.objects.filter(starting_time__range=[day.strftime(format),next_day.strftime(format)])
-    else:
-        flights = Flight.objects.all()
-    serializer = FlightsSerializer(flights,many=True)
-    return JsonResponse(serializer.data, safe=False)
 
 def air_crew(request):
     return render(request, 'wwwApp/air_crew.html')
