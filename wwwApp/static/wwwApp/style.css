@@ -33,9 +33,6 @@ body {
     overflow-y: scroll;
     height: 600px;
 }
-.clickable-row {
-    cursor: pointer;
-}
 .air_crew_flights {
     width: 84%;
     display: inline-block

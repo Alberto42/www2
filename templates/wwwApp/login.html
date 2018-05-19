@@ -23,7 +23,7 @@
                     </p>
                 {% endfor %}
                 <button type="submit">Zaloguj</button>
-                <a href="{% url 'signup' %}">Jesteś nowy ? Zarejestruj się! </a>
+                <a id="signup" href="{% url 'signup' %}">Jesteś nowy ? Zarejestruj się! </a>
             </form>
         {% else %}
             <h4>Jesteś zalogowany jako {{ user }}

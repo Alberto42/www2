@@ -1,4 +1,4 @@
-var selected_flight = undefined, selected_crew = undefined, date;
+var selected_flight = undefined, selected_crew = undefined, date = undefined;
 
 function add_relation() {
     selected_flight.removeAttribute("style");
@@ -53,19 +53,16 @@ function select_crew(node) {
 }
 
 function fetchFlights() {
-    $.ajax({
+    var config = {
         type: 'GET',
         url: '/flights_service/',
         dataType: 'json',
-        data: {
-            date: date
-        },
         success: function (data) {
             var flight_table_body = document.getElementById("flight_table_body");
             flight_table_body.innerHTML = '';
             $.each(data, function (index, element) {
                 var node = jQuery.parseHTML(
-                    "<tr class=\"clickable-row\" onclick=\"select_flight(this)\">" +
+                    "<tr id=\"flight\" class=\"clickable-row\" onclick=\"select_flight(this)\">" +
                     "<td></td>" +
                     "<td></td>" +
                     "<td></td>" +
@@ -82,7 +79,10 @@ function fetchFlights() {
                 flight_table_body.appendChild(node[0]);
             });
         }
-    });
+    };
+    if (date != undefined)
+        config.data= {date:date};
+    $.ajax(config);
 }
 
 $(document).ready(function () {
@@ -93,7 +93,7 @@ $(document).ready(function () {
         success: function (data) {
             $.each(data, function (index, element) {
                 var node = jQuery.parseHTML(
-                    "<tr class=\"clickable-row\" onclick=\"select_crew(this)\">" +
+                    "<tr id=\"crew\" class=\"clickable-row\" onclick=\"select_crew(this)\">" +
                     "<td></td>" +
                     "</tr>"
                 );
@@ -113,4 +113,5 @@ $(document).ready(function () {
             dateFormat: "yy-mm-dd"
         });
     });
+    fetchFlights()
 });

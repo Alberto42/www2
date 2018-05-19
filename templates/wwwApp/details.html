@@ -67,10 +67,10 @@
                 {% csrf_token %}
                 <input type="hidden" value="{{ flight.id }}" name="id"/>
                 Imię:
-                <input type="text" name="name"/>
+                <input id="name" type="text" name="name"/>
                 Nazwisko:
-                <input type="text" name="surname"/>
-                <button type="submit">Kup</button>
+                <input id="surname" type="text" name="surname"/>
+                <button id="buy" type="submit">Kup</button>
             </form>
         {% endif %}
     </div>
