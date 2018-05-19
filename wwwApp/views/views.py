@@ -33,9 +33,11 @@ class FlightTable(tables.Table):
     class Meta:
         model = Flight
         template_name = 'django_tables2/bootstrap.html'
-        exclude = ['id']
+        exclude = ['id','crew']
         row_attrs = {
-            'flight-id': lambda record: str(record.id)
+            'flight-id': lambda record: str(record.id),
+            'data-toggle' : "tooltip",
+            'title' : "Kliknij aby zobaczyć szczegóły lotu",
         }
 
 

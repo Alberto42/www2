@@ -20,12 +20,12 @@ body {
 }
 
 .page-title {
-    width: 70%;
+    width: 90%;
     display: inline-block;
 }
 
 .page-subtitle {
-    width: 29%;
+    width: 9%;
     display: inline-block;
     text-align: right;
 }
@@ -35,4 +35,13 @@ body {
 }
 .clickable-row {
     cursor: pointer;
+}
+.air_crew_flights {
+    width: 84%;
+    display: inline-block
+}
+.crews {
+    width: 15%;
+    display: inline-block;
+    float: right
 }

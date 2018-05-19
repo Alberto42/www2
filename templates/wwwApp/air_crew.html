@@ -15,23 +15,25 @@
 <header>
 
     <div class="container">
-        <h1>Przeloty samolotów pasażerskich
-            <small>Zarządzanie załogami</small>
-        </h1>
+        <div class="page-title">
+            <h1>Przeloty samolotów pasażerskich
+                <small>Zarządzanie załogami</small>
+            </h1>
+        </div>
+        <div class="page-subtitle">
+            <a href="/home">Wstecz</a>
+        </div>
     </div>
 
 </header>
 
 <div class="container">
-    <div class="row">
-        <div class="col-sm-3">
+    <div class="row panel properties">
+        <div class="col-sm-4">
             <p>Data: <input type="text" id="datepicker"/></p>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <button id = "add_relation"type="button" class="btn btn-default" onclick="add_relation()" disabled>Przypisz załogę</button>
-        </div>
-        <div class="col-sm-3">
-            <a href="/home">Wstecz</a>
         </div>
     </div>
     <div class="alert" id="alert">
@@ -40,9 +42,9 @@
         $("#alert").hide();
     </script>
     <div class="row">
-        <p>Aby przypisać załogę do lotu, wybierz lot oraz załogę a następnie kliknij <mark>Przypisz załogę</mark></p>
-        <div class="col-sm-10 panel scrollable_table">
-            <div class="table-container">
+        <p>Aby przypisać załogę do lotu, wybierz lot oraz załogę a następnie kliknij <strong>Przypisz załogę</strong></p>
+        <div class="air_crew_flights">
+            <div class="table-container panel scrollable_table">
                 <table class="table table-hover table-condensed table-responsive">
 
 
@@ -60,8 +62,8 @@
                 </table>
             </div>
         </div>
-        <div class="col-sm-2 panel scrollable_table">
-            <div class="table-container">
+        <div class="crews">
+            <div class="table-container panel scrollable_table">
 
                 <table class="table table-hover table-condensed table-responsive">
 
