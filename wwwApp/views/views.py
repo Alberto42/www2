@@ -15,6 +15,7 @@ from django.utils.translation import gettext_lazy as _
 
 from wwwApp.models import *
 from wwwApp.utils import date_format
+from wwwApp.views.WebServices import flights_filtered_by_date
 
 
 class FlightTable(tables.Table):
@@ -50,7 +51,11 @@ class PassangersTable(tables.Table):
 
 def home(request):
     locale.setlocale(locale.LC_TIME, "pl_PL.utf8")
-    table = FlightTable(Flight.objects.all())
+    if 'date' in request.GET:
+        flights = flights_filtered_by_date(request)
+    else:
+        flights=Flight.objects.all()
+    table = FlightTable(flights)
     RequestConfig(request).configure(table)
     return auth_views.login(request, template_name='wwwApp/home.html', redirect_field_name='home',
                             extra_context={'user': str(request.user), 'table': table})

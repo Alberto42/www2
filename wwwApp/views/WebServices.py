@@ -48,12 +48,17 @@ class FlightsSerializer(serializers.ModelSerializer):
 
 def FlightRestWebService(request):
     if 'date' in request.GET:
-        format = '%Y-%m-%d'
-        date_str = request.GET["date"]
-        day = datetime.strptime(date_str, format)
-        next_day = day + timedelta(days=1)
-        flights = Flight.objects.filter(starting_time__range=[day.strftime(format), next_day.strftime(format)])
+        flights = flights_filtered_by_date(request)
     else:
         flights = Flight.objects.all()
     serializer = FlightsSerializer(flights, many=True)
     return JsonResponse(serializer.data, safe=False)
+
+
+def flights_filtered_by_date(request):
+    format = '%Y-%m-%d'
+    date_str = request.GET["date"]
+    day = datetime.strptime(date_str, format)
+    next_day = day + timedelta(days=1)
+    flights = Flight.objects.filter(starting_time__range=[day.strftime(format), next_day.strftime(format)])
+    return flights
