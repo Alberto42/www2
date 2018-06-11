@@ -32,10 +32,18 @@ function add_relation() {
 function check_if_relation_is_selected() {
     if (selected_flight != undefined && selected_crew != undefined) {
         document.getElementById("add_relation").removeAttribute("disabled");
+    } else {
+        document.getElementById("add_relation").setAttribute("disabled","true")
     }
 }
 
 function select_flight(node) {
+    if (selected_flight == node) {
+        selected_flight.removeAttribute("style");
+        selected_flight = undefined;
+        check_if_relation_is_selected();
+        return;
+    }
     if (selected_flight != undefined) {
         selected_flight.removeAttribute("style");
     }
@@ -43,8 +51,17 @@ function select_flight(node) {
     node.style.backgroundColor = "darkgrey";
     check_if_relation_is_selected();
 }
+// function select_item(node,selected_row) {
+//
+// }
 
 function select_crew(node) {
+    if (selected_crew == node) {
+        selected_crew.removeAttribute("style");
+        selected_crew = undefined;
+        check_if_relation_is_selected();
+        return;
+    }
     if (selected_crew != undefined) {
         selected_crew.removeAttribute("style");
     }
