@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.utils.datetime_safe import datetime
 from rest_framework import serializers
 
@@ -23,6 +23,12 @@ def AddRelationWebService(request):
 
     return JsonResponse(response)
 
+def RemoveCrewWebService(request):
+    flight_id = request.GET["flight_id"]
+    flight = Flight.objects.get(id=flight_id)
+    flight.crew = None
+    flight.save()
+    return JsonResponse({})
 
 class CrewSerializer(serializers.ModelSerializer):
     class Meta:

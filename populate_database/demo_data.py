@@ -43,7 +43,7 @@ i = 0
 for plane in Plane.objects.all():
     logging.info("Flights for plane: " + str(i))
     start_airport = random.choice(tuple(Airport.objects.all()))
-    end_date = datetime(2018, 5, 1, 0, 0) + timedelta(minutes=random.randrange(0, 300))
+    end_date = datetime(2018, 6, 1, 0, 0) + timedelta(minutes=random.randrange(0, 300))
     for i in range(0, FLIGHTS_FOR_EACH_PLANE_COUNT):
         destination_airport = start_airport
         while (destination_airport == start_airport):

@@ -29,7 +29,26 @@ function add_relation() {
 
 }
 
+function remove_crew() {
+    selected_flight.removeAttribute("style");
+    document.getElementById("remove_crew").setAttribute("disabled", "");
+    $.ajax({
+        type: 'GET',
+        url: '/remove_relation_service/',
+        dataType: 'json',
+        data: {
+            flight_id: selected_flight.getAttribute("id")
+        },
+        success: function () {
+            fetchFlights();
+        }
+    });
+}
+
 function check_if_relation_is_selected() {
+    if (selected_flight != undefined) {
+        document.getElementById("remove_crew").removeAttribute("disabled");
+    }
     if (selected_flight != undefined && selected_crew != undefined) {
         document.getElementById("add_relation").removeAttribute("disabled");
     } else {
