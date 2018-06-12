@@ -1,10 +1,13 @@
 var selected_flight = undefined, selected_crew = undefined, date = undefined;
 
 function add_relation() {
+    var selected_crew_local = selected_crew
+    var selected_flight_local = selected_flight
+
     selected_flight.removeAttribute("style");
     selected_crew.removeAttribute("style");
     document.getElementById("add_relation").setAttribute("disabled", "");
-    $.ajax({
+    add_relation_proxy({
         type: 'GET',
         url: '/add_relation_service/',
         dataType: 'json',
@@ -17,7 +20,9 @@ function add_relation() {
             alert.setAttribute("class", "alert " + data.alert_class);
             alert.innerHTML = ''
             alert.appendChild(document.createTextNode(data.alert));
-            fetchFlights();
+
+            set_crew(selected_crew_local,selected_flight_local);
+
             $("#alert").fadeTo(2000, 500).slideUp(500, function () {
                 $("#alert").slideUp(500);
                 alert.removeChild(alert.lastChild);
