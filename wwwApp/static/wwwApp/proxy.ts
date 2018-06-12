@@ -11,6 +11,25 @@ interface AddRelationRequest{
     success : any
 }
 
+var requests: Array<AddRelationRequest> = []
+
 function add_relation_proxy(ajax: AddRelationRequest) {
-    $.ajax(ajax)
+    let found: boolean = false;
+    requests.forEach( (request) => {
+        if (request.data.flight_id == ajax.data.flight_id) {
+            found = true;
+            request.data.flight_id = ajax.data.flight_id;
+        }
+    })
+    if (found == false )
+        requests.push(ajax);
+    ajax.success();
+}
+
+
+function synchronize() {
+    requests.forEach((request) => {
+        $.ajax(request)
+    })
+    requests = [];
 }

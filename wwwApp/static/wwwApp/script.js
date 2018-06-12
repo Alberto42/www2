@@ -15,16 +15,16 @@ function add_relation() {
             crew_id: selected_crew.getAttribute("id"),
             flight_id: selected_flight.getAttribute("id")
         },
-        success: function (data) {
+        success: function () {
             alert = document.getElementById("alert");
-            alert.setAttribute("class", "alert " + data.alert_class);
+            alert.setAttribute("class", "alert alert-info");
             alert.innerHTML = ''
-            alert.appendChild(document.createTextNode(data.alert));
+            alert.appendChild(document.createTextNode("Dodano lokalnie załogę do lotu. Kliknij \"synchronizuj\" aby zsynchronizować zmiany z serwerem."));
 
             set_crew(selected_crew_local,selected_flight_local);
 
-            $("#alert").fadeTo(2000, 500).slideUp(500, function () {
-                $("#alert").slideUp(500);
+            $("#alert").fadeTo(2000, 700).slideUp(700, function () {
+                $("#alert").slideUp(700);
                 alert.removeChild(alert.lastChild);
             });
         }
