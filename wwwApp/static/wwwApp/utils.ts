@@ -15,8 +15,19 @@ function show_alert(type, text, length) {
     alert.innerHTML = ''
     alert.appendChild(document.createTextNode(text));
 
-    $("#alert").fadeTo(2000, length).slideUp(length, function () {
-        $("#alert").slideUp(length);
-        alert.removeChild(alert.lastChild);
-    });
+    $("#alert").show(); // use slide down for animation
+      setTimeout(function () {
+          if (alert.innerText == text) {
+              $("#alert").slideUp(500);
+              alert.removeChild(alert.lastChild);
+          }
+      }, length);
+}
+
+function check_if_not_busy() {
+    if (busy) {
+        show_alert("alert-warning","Aktualnie wykonywana jest synchronizacja, spróbuj później",2000)
+        return false
+    }
+    return true;
 }

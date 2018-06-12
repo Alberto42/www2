@@ -1,6 +1,9 @@
 var selected_flight = undefined, selected_crew = undefined, date = undefined;
 
 function add_relation() {
+    if (!check_if_not_busy())
+        return;
+    hide_red_buttons()
     selected_flight.removeAttribute("style");
     selected_crew.removeAttribute("style");
     document.getElementById("add_relation").setAttribute("disabled", "");
@@ -10,20 +13,23 @@ function add_relation() {
     });
 
     set_crew(selected_crew,selected_flight);
-    show_alert("alert-info","Dodano lokalnie załogę do lotu. Kliknij \"synchronizuj\" aby zsynchronizować zmiany z serwerem.",700);
+    show_alert("alert-info","Dodano lokalnie załogę do lotu. Kliknij \"synchronizuj\" aby zsynchronizować zmiany z serwerem.",2000);
 
     selected_flight = undefined;
     selected_crew = undefined;
 }
 
 function remove_crew() {
+    if (!check_if_not_busy())
+        return;
+    hide_red_buttons()
     selected_flight.removeAttribute("style");
     document.getElementById("remove_crew").setAttribute("disabled", "");
     add_request({
         crew_id: "remove",
         flight_id: selected_flight.getAttribute("id")
     });
-    $.ajax();
+    show_alert("alert-info","Usunięto lokalnie przypisanie załogi do lotu. Kliknij \"synchronizuj\" aby zsynchronizować zmiany z serwerem.",2000);
     unset_crew(selected_flight);
     selected_flight = undefined;
 }
@@ -53,9 +59,6 @@ function select_flight(node) {
     node.style.backgroundColor = "darkgrey";
     check_if_relation_is_selected();
 }
-// function select_item(node,selected_row) {
-//
-// }
 
 function select_crew(node) {
     if (selected_crew == node) {

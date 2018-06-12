@@ -1,4 +1,5 @@
 from datetime import timedelta
+from time import sleep
 
 from django.db import transaction
 from django.db.transaction import rollback
@@ -9,34 +10,12 @@ from rest_framework import serializers
 from wwwApp.models import Flight, Crew
 from wwwApp.utils import flight_intersect_crew_flights, intersect
 
-
-def AddRelationWebService(request):
-    crew_id = request.GET["crew_id"]
-    flight_id = request.GET["flight_id"]
-    flight = Flight.objects.get(id=flight_id)
-    crew = Crew.objects.get(id=crew_id)
-    crew_flights = Flight.objects.filter(crew=crew)
-    if flight_intersect_crew_flights(crew_flights, flight):
-        response = {'alert_class': 'alert-danger', 'alert': 'Porażka! Załoga w tym czasie pracuje w innym samolocie'}
-    else:
-        flight.crew = crew
-        flight.save()
-        response = {'alert_class': 'alert-success', 'alert': 'Sukces! Udało się pomyślnie dodać załogę do lotu'}
-
-    return JsonResponse(response)
-
-def RemoveCrewWebService(request):
-    flight_id = request.GET["flight_id"]
-    flight = Flight.objects.get(id=flight_id)
-    flight.crew = None
-    flight.save()
-    return JsonResponse({})
-
 class Request:
     pass
 
 @transaction.atomic
 def SynchronizeWebService(request):
+    print("Poczatek synchronize")
     sid = transaction.savepoint()
     requests = []
     for i,(key,value) in enumerate(request.GET.items()):
@@ -72,10 +51,12 @@ def SynchronizeWebService(request):
                     if (flight1 != flight2 and intersect(flight1,flight2)):
                         wrong_flights.add(flight1)
                         wrong_flights.add(flight2)
+    sleep(10)
     if (wrong_flights):
         transaction.savepoint_rollback(sid)
 
     serializer = FlightsSerializer(wrong_flights, many=True)
+    print("Koniec synchronize")
     return JsonResponse(serializer.data, safe=False)
 
 class CrewSerializer(serializers.ModelSerializer):
