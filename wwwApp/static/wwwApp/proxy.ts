@@ -17,6 +17,7 @@ function synchronize() {
     if (!check_if_not_busy())
         return;
     busy = true;
+    let id_alert = create_alert('alert-warning','Synchronizuje. Wszystkie operacje są zabronione');
     hide_red_buttons()
     $.ajax({
         type: 'GET',
@@ -37,11 +38,12 @@ function synchronize() {
                     show_alert('alert-success','Synchronizaja przeprowadzona pomyślnie!',2000);
                     fetchFlights();
                 }
+                remove_alert(id_alert);
+                busy = false;
             }
 
-        }
-    });
-    busy = false;
+        });
+
 }
 
 function hide_red_buttons() {

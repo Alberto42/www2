@@ -6,7 +6,7 @@ function add_relation() {
     hide_red_buttons()
     selected_flight.removeAttribute("style");
     selected_crew.removeAttribute("style");
-    document.getElementById("add_relation").setAttribute("disabled", "");
+
     add_request({
         crew_id: selected_crew.getAttribute("id"),
         flight_id: selected_flight.getAttribute("id")
@@ -17,6 +17,7 @@ function add_relation() {
 
     selected_flight = undefined;
     selected_crew = undefined;
+    change_buttons_status();
 }
 
 function remove_crew() {
@@ -32,11 +33,14 @@ function remove_crew() {
     show_alert("alert-info","Usunięto lokalnie przypisanie załogi do lotu. Kliknij \"synchronizuj\" aby zsynchronizować zmiany z serwerem.",2000);
     unset_crew(selected_flight);
     selected_flight = undefined;
+    change_buttons_status();
 }
 
-function check_if_relation_is_selected() {
+function change_buttons_status() {
     if (selected_flight != undefined) {
         document.getElementById("remove_crew").removeAttribute("disabled");
+    } else {
+        document.getElementById("remove_crew").setAttribute("disabled","true")
     }
     if (selected_flight != undefined && selected_crew != undefined) {
         document.getElementById("add_relation").removeAttribute("disabled");
@@ -49,7 +53,7 @@ function select_flight(node) {
     if (selected_flight == node) {
         selected_flight.removeAttribute("style");
         selected_flight = undefined;
-        check_if_relation_is_selected();
+        change_buttons_status();
         return;
     }
     if (selected_flight != undefined) {
@@ -57,14 +61,14 @@ function select_flight(node) {
     }
     selected_flight = node;
     node.style.backgroundColor = "darkgrey";
-    check_if_relation_is_selected();
+    change_buttons_status();
 }
 
 function select_crew(node) {
     if (selected_crew == node) {
         selected_crew.removeAttribute("style");
         selected_crew = undefined;
-        check_if_relation_is_selected();
+        change_buttons_status();
         return;
     }
     if (selected_crew != undefined) {
@@ -72,7 +76,7 @@ function select_crew(node) {
     }
     selected_crew = node;
     node.style.backgroundColor = "darkgrey";
-    check_if_relation_is_selected();
+    change_buttons_status();
 }
 
 function fetchFlights() {

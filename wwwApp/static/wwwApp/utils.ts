@@ -9,18 +9,35 @@ function unset_crew(selected_flight: any) {
     crew.innerText = '';
 }
 
-function show_alert(type, text, length) {
-    alert = document.getElementById("alert");
+function remove_alert(id) {
+    let alertDiv = document.getElementById("alert");
+    let alert = document.getElementById(id);
+    $("#" + id).slideUp(500);
+    alert.removeChild(alert.lastChild);
+    alertDiv.removeChild(alert);
+}
+
+function create_alert(type,text) {
+    let alertDiv = document.getElementById("alert");
+    let alert = document.createElement("div");
+    let id = "alert " + next_alert;
+    alertDiv.appendChild(alert);
     alert.setAttribute("class", "alert " + type);
+    alert.setAttribute("style","margin-bottom: 0px");
+    alert.setAttribute("id",id);
+    next_alert++;
     alert.innerHTML = ''
     alert.appendChild(document.createTextNode(text));
+    return id;
+}
 
-    $("#alert").show(); // use slide down for animation
+let next_alert : number = 0;
+function show_alert(type, text, length) {
+    let id = create_alert(type,text);
+
+    $("#" + id).show(); // use slide down for animation
       setTimeout(function () {
-          if (alert.innerText == text) {
-              $("#alert").slideUp(500);
-              alert.removeChild(alert.lastChild);
-          }
+          remove_alert(id);
       }, length);
 }
 
