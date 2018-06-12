@@ -1,11 +1,13 @@
 from datetime import timedelta
 
+from django.db import transaction
+from django.db.transaction import rollback
 from django.http import JsonResponse, HttpResponse
 from django.utils.datetime_safe import datetime
 from rest_framework import serializers
 
 from wwwApp.models import Flight, Crew
-from wwwApp.utils import flight_intersect_crew_flights
+from wwwApp.utils import flight_intersect_crew_flights, intersect
 
 
 def AddRelationWebService(request):
@@ -29,6 +31,52 @@ def RemoveCrewWebService(request):
     flight.crew = None
     flight.save()
     return JsonResponse({})
+
+class Request:
+    pass
+
+@transaction.atomic
+def SynchronizeWebService(request):
+    sid = transaction.savepoint()
+    requests = []
+    for i,(key,value) in enumerate(request.GET.items()):
+        if (i % 2 == 1):
+            requests[-1].flight_id = int(value)
+        else:
+            requests.append(Request())
+            if (value == 'remove'):
+                requests[-1].remove = True
+            else:
+                requests[-1].remove = False
+
+                requests[-1].crew_id = int(value)
+
+    sid = transaction.savepoint()
+    wrong_flights = set()
+    for r in requests:
+        flight = Flight.objects.get(id=r.flight_id)
+        if (r.remove):
+            flight.crew = None
+            flight.save()
+        else:
+            crew = Crew.objects.get(id=r.crew_id)
+            flight.crew = crew
+            flight.save()
+
+    for r in requests:
+        if (r.remove == False):
+            crew = Crew.objects.get(id=r.crew_id)
+            crew_flights = Flight.objects.filter(crew=crew)
+            for flight1 in crew_flights:
+                for flight2 in crew_flights:
+                    if (flight1 != flight2 and intersect(flight1,flight2)):
+                        wrong_flights.add(flight1)
+                        wrong_flights.add(flight2)
+    if (wrong_flights):
+        transaction.savepoint_rollback(sid)
+
+    serializer = FlightsSerializer(wrong_flights, many=True)
+    return JsonResponse(serializer.data, safe=False)
 
 class CrewSerializer(serializers.ModelSerializer):
     class Meta:

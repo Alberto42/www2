@@ -31,4 +31,5 @@ urlpatterns = [
     path('flights_service/', wwwApp.views.WebServices.FlightRestWebService),
     path('add_relation_service/', wwwApp.views.WebServices.AddRelationWebService),
     path('remove_relation_service/', wwwApp.views.WebServices.RemoveCrewWebService),
+    path('synchronize_service/', wwwApp.views.WebServices.SynchronizeWebService),
 ]

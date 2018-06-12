@@ -1,53 +1,31 @@
 var selected_flight = undefined, selected_crew = undefined, date = undefined;
 
 function add_relation() {
-    var selected_crew_local = selected_crew
-    var selected_flight_local = selected_flight
-
     selected_flight.removeAttribute("style");
     selected_crew.removeAttribute("style");
     document.getElementById("add_relation").setAttribute("disabled", "");
-    add_relation_proxy({
-        type: 'GET',
-        url: '/add_relation_service/',
-        dataType: 'json',
-        data: {
-            crew_id: selected_crew.getAttribute("id"),
-            flight_id: selected_flight.getAttribute("id")
-        },
-        success: function () {
-            alert = document.getElementById("alert");
-            alert.setAttribute("class", "alert alert-info");
-            alert.innerHTML = ''
-            alert.appendChild(document.createTextNode("Dodano lokalnie załogę do lotu. Kliknij \"synchronizuj\" aby zsynchronizować zmiany z serwerem."));
-
-            set_crew(selected_crew_local,selected_flight_local);
-
-            $("#alert").fadeTo(2000, 700).slideUp(700, function () {
-                $("#alert").slideUp(700);
-                alert.removeChild(alert.lastChild);
-            });
-        }
+    add_request({
+        crew_id: selected_crew.getAttribute("id"),
+        flight_id: selected_flight.getAttribute("id")
     });
+
+    set_crew(selected_crew,selected_flight);
+    show_alert("alert-info","Dodano lokalnie załogę do lotu. Kliknij \"synchronizuj\" aby zsynchronizować zmiany z serwerem.",700);
+
     selected_flight = undefined;
     selected_crew = undefined;
-
 }
 
 function remove_crew() {
     selected_flight.removeAttribute("style");
     document.getElementById("remove_crew").setAttribute("disabled", "");
-    $.ajax({
-        type: 'GET',
-        url: '/remove_relation_service/',
-        dataType: 'json',
-        data: {
-            flight_id: selected_flight.getAttribute("id")
-        },
-        success: function () {
-            fetchFlights();
-        }
+    add_request({
+        crew_id: "remove",
+        flight_id: selected_flight.getAttribute("id")
     });
+    $.ajax();
+    unset_crew(selected_flight);
+    selected_flight = undefined;
 }
 
 function check_if_relation_is_selected() {

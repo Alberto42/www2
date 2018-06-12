@@ -32,12 +32,18 @@
 
 <div class="container">
     <div class="row panel properties">
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <p>Data: <input type="text" id="datepicker"/></p>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-2">
             <button id = "add_relation"type="button" class="btn btn-default" onclick="add_relation()" disabled>Przypisz załogę</button>
-            <button id = "remove_crew"type="button" class="btn btn-danger" onclick="remove_crew()" disabled>Usuń załogę</button>
+        </div>
+        <div class="col-sm-2">
+            <button id="remove_crew" type="button" class="btn btn-danger" onclick="remove_crew()" disabled>Usuń załogę
+            </button>
+        </div>
+        <div class="col-sm-2">
+            <button id="synchronize" type="button" class="btn btn-basic" onclick="synchronize()">Synchronizuj</button>
         </div>
     </div>
     <div class="alert" id="alert">
