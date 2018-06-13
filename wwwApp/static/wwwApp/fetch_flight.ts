@@ -1,17 +1,17 @@
 import * as $ from "jquery";
 
-export let date: any = undefined
+export let date: any = undefined;
 
 export function fetchFlights() {
-    let config = {
+    let config : any = {
         type: 'GET',
         url: '/flights_service/',
         dataType: 'json',
-        success: function (data) {
+        success: function (data: any) {
             var flight_table_body = document.getElementById("flight_table_body");
             flight_table_body.innerHTML = '';
             $.each(data, function (index, element) {
-                var node = $.parseHTML(
+                let node:any = jQuery.parseHTML(
                     "<tr id=\"flight\" class=\"clickable-row\" onclick=\"select_flight(this)\">" +
                     "<td></td>" +
                     "<td></td>" +
@@ -34,4 +34,8 @@ export function fetchFlights() {
     if (date != undefined)
         config.data= {date:date};
     $.ajax(config);
+}
+
+export function setDate(date_new : any) {
+    date = date_new;
 }

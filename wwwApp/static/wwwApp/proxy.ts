@@ -50,7 +50,7 @@ function synchronize() {
 
 }
 
-function hide_red_buttons() {
+export function hide_red_buttons() {
     $.each(last_red_buttons, function (index, element) {
         document.getElementById(element["id"]).removeAttribute("style");
     });
