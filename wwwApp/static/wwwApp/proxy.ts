@@ -10,7 +10,7 @@ interface Request {
 class Proxy {
     requests: Array<Request> = [];
 
-    last_red_buttons: Array<any> = [];
+    last_red_buttons: Array<Request> = [];
 
     busy: boolean = false;
 

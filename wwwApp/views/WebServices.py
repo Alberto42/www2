@@ -56,7 +56,7 @@ def SynchronizeWebService(request):
         transaction.savepoint_rollback(sid)
 
     serializer = FlightsSerializer(wrong_flights, many=True)
-    print("Koniec synchronize")
+    print("Koniec synchronize2")
     return JsonResponse(serializer.data, safe=False)
 
 class CrewSerializer(serializers.ModelSerializer):

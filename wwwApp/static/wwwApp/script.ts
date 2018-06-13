@@ -4,7 +4,7 @@ import {set_crew, show_alert, unset_crew} from "./utils";
 import {fetchFlights, setDate} from "./fetch_flight";
 import * as fetch_flights from "./fetch_flight";
 
-var selected_flight : any = undefined, selected_crew : any = undefined;
+var selected_flight : HTMLElement = undefined, selected_crew : HTMLElement = undefined;
 
 export function add_relation() {
     if (!proxy.check_if_not_busy())
@@ -57,7 +57,7 @@ function change_buttons_status() {
     }
 }
 
-export function select_flight(node : any) {
+export function select_flight(node : HTMLElement) {
     if (selected_flight == node) {
         selected_flight.removeAttribute("style");
         selected_flight = undefined;
@@ -73,7 +73,7 @@ export function select_flight(node : any) {
 }
 window.select_flight = select_flight;
 
-export function select_crew(node : any) {
+export function select_crew(node : HTMLElement) {
     if (selected_crew == node) {
         selected_crew.removeAttribute("style");
         selected_crew = undefined;
@@ -101,7 +101,7 @@ $(document).ready(function () {
                     "<td></td>" +
                     "</tr>"
                 );
-                var captain : any = document.createTextNode(element.captain_name + " " + element.captain_surname);
+                var captain : Text = document.createTextNode(element.captain_name + " " + element.captain_surname);
                 node[0].firstChild.appendChild(captain);
                 node[0].setAttribute("id", element.id);
                 document.getElementById("crew_table_body").appendChild(node[0]);
