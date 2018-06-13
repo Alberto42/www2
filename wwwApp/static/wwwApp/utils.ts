@@ -1,4 +1,3 @@
-// import * as $ from "jquery";
 
 export function set_crew(selected_crew: any, selected_flight: any) {
     var crew = selected_flight.childNodes[4];

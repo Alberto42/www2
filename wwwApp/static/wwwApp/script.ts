@@ -1,4 +1,3 @@
-// import * as $ from "jquery";
 import {proxy} from "./proxy";
 import {set_crew, show_alert, unset_crew} from "./utils";
 import {fetchFlights, setDate} from "./fetch_flight";
