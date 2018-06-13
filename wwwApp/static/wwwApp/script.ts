@@ -1,5 +1,5 @@
 // import * as $ from "jquery";
-import {add_request, check_if_not_busy, hide_red_buttons} from "./proxy";
+import {proxy} from "./proxy";
 import {set_crew, show_alert, unset_crew} from "./utils";
 import {fetchFlights, setDate} from "./fetch_flight";
 import * as fetch_flights from "./fetch_flight";
@@ -7,13 +7,13 @@ import * as fetch_flights from "./fetch_flight";
 var selected_flight : any = undefined, selected_crew : any = undefined;
 
 export function add_relation() {
-    if (!check_if_not_busy())
+    if (!proxy.check_if_not_busy())
         return;
-    hide_red_buttons()
+    proxy.hide_red_buttons()
     selected_flight.removeAttribute("style");
     selected_crew.removeAttribute("style");
 
-    add_request({
+    proxy.add_request({
         crew_id: selected_crew.getAttribute("id"),
         flight_id: selected_flight.getAttribute("id")
     });
@@ -28,12 +28,12 @@ export function add_relation() {
 window.add_relation = add_relation;
 
 export function remove_crew() {
-    if (!check_if_not_busy())
+    if (!proxy.check_if_not_busy())
         return;
-    hide_red_buttons()
+    proxy.hide_red_buttons()
     selected_flight.removeAttribute("style");
     document.getElementById("remove_crew").setAttribute("disabled", "");
-    add_request({
+    proxy.add_request({
         crew_id: "remove",
         flight_id: selected_flight.getAttribute("id")
     });
