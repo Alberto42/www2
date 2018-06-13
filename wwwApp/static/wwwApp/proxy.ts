@@ -1,3 +1,10 @@
+export function addTextToBody(text) {
+    console.log("Hello from module function");
+  const div = document.createElement('div');
+  div.textContent = text;
+  document.body.appendChild(div);
+}
+
 interface Request{
     crew_id : string;
     flight_id : string;
@@ -9,7 +16,7 @@ let last_red_buttons: Array<any> = [];
 
 let busy : boolean
 
-function add_request(data: Request) {
+export function add_request(data: Request) {
     requests.push(data);
 }
 

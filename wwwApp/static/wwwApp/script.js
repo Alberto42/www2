@@ -1,3 +1,5 @@
+var foo = require('./proxy')
+
 var selected_flight = undefined, selected_crew = undefined, date = undefined;
 
 function add_relation() {
@@ -140,4 +142,6 @@ $(document).ready(function () {
             dateFormat: "yy-mm-dd"
         });
     });
+    foo.addTextToBody("Modules are pretty cool.");
+
 });

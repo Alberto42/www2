@@ -51,7 +51,7 @@ def SynchronizeWebService(request):
                     if (flight1 != flight2 and intersect(flight1,flight2)):
                         wrong_flights.add(flight1)
                         wrong_flights.add(flight2)
-    sleep(10)
+    sleep(4)
     if (wrong_flights):
         transaction.savepoint_rollback(sid)
 
