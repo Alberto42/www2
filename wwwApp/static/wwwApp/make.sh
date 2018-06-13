@@ -1,3 +1,4 @@
 tsc proxy.ts
 tsc utils.ts
-browserify script.js proxy.js utils.js > bundle.js
+tsc fetch_flight.ts
+browserify script.js proxy.js utils.js fetch_flight.js > bundle.js

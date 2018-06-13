@@ -1,9 +1,6 @@
-export function addTextToBody(text) {
-    console.log("Hello from module function");
-  const div = document.createElement('div');
-  div.textContent = text;
-  document.body.appendChild(div);
-}
+import * as $ from "jquery";
+import {create_alert,remove_alert, show_alert} from "./utils";
+import {fetchFlights} from "./fetch_flight";
 
 interface Request{
     crew_id : string;
@@ -57,4 +54,12 @@ function hide_red_buttons() {
     $.each(last_red_buttons, function (index, element) {
         document.getElementById(element["id"]).removeAttribute("style");
     });
+}
+
+export function check_if_not_busy() {
+    if (busy) {
+        show_alert("alert-warning","Aktualnie wykonywana jest synchronizacja, spróbuj później",2000)
+        return false
+    }
+    return true;
 }

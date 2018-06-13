@@ -1,15 +1,17 @@
-function set_crew(selected_crew: any, selected_flight: any) {
+import * as $ from "jquery";
+
+export function set_crew(selected_crew: any, selected_flight: any) {
     var crew = selected_flight.childNodes[4];
     var captain_name = selected_crew.childNodes[0].innerText;
     var textnode = document.createTextNode(captain_name);
     crew.innerText = captain_name;
 }
-function unset_crew(selected_flight: any) {
+export function unset_crew(selected_flight: any) {
     var crew = selected_flight.childNodes[4];
     crew.innerText = '';
 }
 
-function remove_alert(id) {
+export function remove_alert(id) {
     let alertDiv = document.getElementById("alert");
     let alert = document.getElementById(id);
     $("#" + id).slideUp(500);
@@ -17,7 +19,7 @@ function remove_alert(id) {
     alertDiv.removeChild(alert);
 }
 
-function create_alert(type,text) {
+export function create_alert(type,text) {
     let alertDiv = document.getElementById("alert");
     let alert = document.createElement("div");
     let id = "alert " + next_alert;
@@ -32,19 +34,11 @@ function create_alert(type,text) {
 }
 
 let next_alert : number = 0;
-function show_alert(type, text, length) {
+export function show_alert(type, text, length) {
     let id = create_alert(type,text);
 
     $("#" + id).show(); // use slide down for animation
       setTimeout(function () {
           remove_alert(id);
       }, length);
-}
-
-function check_if_not_busy() {
-    if (busy) {
-        show_alert("alert-warning","Aktualnie wykonywana jest synchronizacja, spróbuj później",2000)
-        return false
-    }
-    return true;
 }

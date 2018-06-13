@@ -1,9 +1,10 @@
 var foo = require('./proxy')
+var flight_module = require('./fetch_flight')
 
-var selected_flight = undefined, selected_crew = undefined, date = undefined;
+var selected_flight = undefined, selected_crew = undefined;
 
 function add_relation() {
-    if (!check_if_not_busy())
+    if (!foo.check_if_not_busy())
         return;
     hide_red_buttons()
     selected_flight.removeAttribute("style");
@@ -81,39 +82,6 @@ function select_crew(node) {
     change_buttons_status();
 }
 
-function fetchFlights() {
-    var config = {
-        type: 'GET',
-        url: '/flights_service/',
-        dataType: 'json',
-        success: function (data) {
-            var flight_table_body = document.getElementById("flight_table_body");
-            flight_table_body.innerHTML = '';
-            $.each(data, function (index, element) {
-                var node = jQuery.parseHTML(
-                    "<tr id=\"flight\" class=\"clickable-row\" onclick=\"select_flight(this)\">" +
-                    "<td></td>" +
-                    "<td></td>" +
-                    "<td></td>" +
-                    "<td></td>" +
-                    "<td></td>" +
-                    "</tr>"
-                );
-                var properties = ["starting_airport_name", "starting_time_formatted", "destination_airport_name",
-                    "destination_time_formatted", "crew_name"];
-                for (var i = 0; i < properties.length; i++) {
-                    node[0].childNodes[i].appendChild(document.createTextNode(element[properties[i]]));
-                }
-                node[0].setAttribute("id", element.id);
-                flight_table_body.appendChild(node[0]);
-            });
-        }
-    };
-    if (date != undefined)
-        config.data= {date:date};
-    $.ajax(config);
-}
-
 $(document).ready(function () {
     $.ajax({
         type: 'GET',
@@ -136,12 +104,10 @@ $(document).ready(function () {
     $(function () {
         $("#datepicker").datepicker({
             onSelect: function (dateText) {
-                date = dateText
-                fetchFlights()
+                flight_module.date = dateText
+                flight_module.fetchFlights()
             },
             dateFormat: "yy-mm-dd"
         });
     });
-    foo.addTextToBody("Modules are pretty cool.");
-
 });
