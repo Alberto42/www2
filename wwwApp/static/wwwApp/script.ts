@@ -1,4 +1,4 @@
-import * as $ from "jquery";
+// import * as $ from "jquery";
 import {add_request, check_if_not_busy, hide_red_buttons} from "./proxy";
 import {set_crew, show_alert, unset_crew} from "./utils";
 import {fetchFlights, setDate} from "./fetch_flight";
@@ -55,7 +55,7 @@ function change_buttons_status() {
     }
 }
 
-function select_flight(node : any) {
+export function select_flight(node : any) {
     if (selected_flight == node) {
         selected_flight.removeAttribute("style");
         selected_flight = undefined;
@@ -69,6 +69,10 @@ function select_flight(node : any) {
     node.style.backgroundColor = "darkgrey";
     change_buttons_status();
 }
+window.select_flight = function(node : any) {
+    select_flight(node);
+}
+    // = select_flight;
 
 function select_crew(node : any) {
     if (selected_crew == node) {

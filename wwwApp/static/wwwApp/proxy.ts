@@ -1,4 +1,4 @@
-import * as $ from "jquery";
+// import * as $ from "jquery";
 import {create_alert,remove_alert, show_alert} from "./utils";
 import {fetchFlights} from "./fetch_flight";
 
