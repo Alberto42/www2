@@ -11,7 +11,7 @@ export function unset_crew(selected_flight: any) {
     crew.innerText = '';
 }
 
-export function remove_alert(id : any) {
+export function remove_alert(id : string) {
     let alertDiv = document.getElementById("alert");
     let alert = document.getElementById(id);
     $("#" + id).slideUp(500);
@@ -19,7 +19,7 @@ export function remove_alert(id : any) {
     alertDiv.removeChild(alert);
 }
 
-export function create_alert(type : any,text : any) {
+export function create_alert(type : string,text : string) {
     let alertDiv = document.getElementById("alert");
     let alert = document.createElement("div");
     let id = "alert " + next_alert;
@@ -34,7 +34,7 @@ export function create_alert(type : any,text : any) {
 }
 
 let next_alert : number = 0;
-export function show_alert(type : any, text : any, length : any) {
+export function show_alert(type : string, text : string, length : number) {
     let id = create_alert(type,text);
 
     $("#" + id).show(); // use slide down for animation

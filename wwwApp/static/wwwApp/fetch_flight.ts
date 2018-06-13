@@ -1,9 +1,11 @@
 // import * as $ from "jquery";
 
+import AjaxSettings = JQuery.AjaxSettings;
+
 export let date: any = undefined;
 
 export function fetchFlights() {
-    let config : any = {
+    let config : AjaxSettings<any> = {
         type: 'GET',
         url: '/flights_service/',
         dataType: 'json',
