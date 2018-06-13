@@ -17,7 +17,7 @@ export function add_request(data: Request) {
     requests.push(data);
 }
 
-function synchronize() {
+export function synchronize() {
     if (!check_if_not_busy())
         return;
     busy = true;
@@ -47,8 +47,8 @@ function synchronize() {
             }
 
         });
-
 }
+window.synchronize = synchronize;
 
 export function hide_red_buttons() {
     $.each(last_red_buttons, function (index, element) {

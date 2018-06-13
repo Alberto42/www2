@@ -6,7 +6,7 @@ import * as fetch_flights from "./fetch_flight";
 
 var selected_flight : any = undefined, selected_crew : any = undefined;
 
-function add_relation() {
+export function add_relation() {
     if (!check_if_not_busy())
         return;
     hide_red_buttons()
@@ -25,8 +25,9 @@ function add_relation() {
     selected_crew = undefined;
     change_buttons_status();
 }
+window.add_relation = add_relation;
 
-function remove_crew() {
+export function remove_crew() {
     if (!check_if_not_busy())
         return;
     hide_red_buttons()
@@ -41,6 +42,7 @@ function remove_crew() {
     selected_flight = undefined;
     change_buttons_status();
 }
+window.remove_crew = remove_crew;
 
 function change_buttons_status() {
     if (selected_flight != undefined) {
@@ -69,12 +71,9 @@ export function select_flight(node : any) {
     node.style.backgroundColor = "darkgrey";
     change_buttons_status();
 }
-window.select_flight = function(node : any) {
-    select_flight(node);
-}
-    // = select_flight;
+window.select_flight = select_flight;
 
-function select_crew(node : any) {
+export function select_crew(node : any) {
     if (selected_crew == node) {
         selected_crew.removeAttribute("style");
         selected_crew = undefined;
@@ -88,6 +87,7 @@ function select_crew(node : any) {
     node.style.backgroundColor = "darkgrey";
     change_buttons_status();
 }
+window.select_crew = select_crew;
 
 $(document).ready(function () {
     $.ajax({
